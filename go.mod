@@ -1,4 +1,4 @@
-module github.com/gokit
+module github.com/shivkumarsingh7/gokit-microservices
 
 go 1.13
 
