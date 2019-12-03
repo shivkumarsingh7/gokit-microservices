@@ -10,7 +10,7 @@ import (
 	"github.com/shivkumarsingh7/gokit-microservices/services"
 )
 
-func MakeUppercaseEndpoint(svc services.StrService) endpoint.Endpoint {
+func MakeUppercaseEndpoint(svc services.StringServices) endpoint.Endpoint {
 	return func(_ context.Context, req interface{}) (interface{}, error) {
 		r := req.(requests.UppercaseRequest)
 		str, err := svc.UpperCase(r.Str)
@@ -21,7 +21,7 @@ func MakeUppercaseEndpoint(svc services.StrService) endpoint.Endpoint {
 	}
 }
 
-func MakeCountEndpoint(svc services.StrService) endpoint.Endpoint {
+func MakeCountEndpoint(svc services.StringServices) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(requests.CountRequest)
 		len := svc.Count(req.Str)

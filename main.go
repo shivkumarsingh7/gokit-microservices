@@ -2,20 +2,24 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 
+	"github.com/go-kit/kit/log"
 	httptransport "github.com/go-kit/kit/transport/http"
 
 	"github.com/shivkumarsingh7/gokit-microservices/endpoints"
+	"github.com/shivkumarsingh7/gokit-microservices/middleware"
 	"github.com/shivkumarsingh7/gokit-microservices/requests"
 	"github.com/shivkumarsingh7/gokit-microservices/responses"
 	"github.com/shivkumarsingh7/gokit-microservices/services"
 )
 
 func main() {
-	svc := services.StrService{}
-
+	logger := log.NewLogfmtLogger(os.Stderr)
+	var svc services.StringServices
+	svc = services.StrService{}
+	svc = middleware.LoggingMiddleware(logger)(svc)
 	uppercaseHandler := httptransport.NewServer(
 		endpoints.MakeUppercaseEndpoint(svc),
 		requests.DecodeUppercaseRequest,
@@ -32,5 +36,5 @@ func main() {
 
 	http.Handle("/uppercase", uppercaseHandler)
 	http.Handle("/count", countHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.ListenAndServe(":8080", nil)
 }
